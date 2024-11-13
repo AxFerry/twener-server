@@ -3,6 +3,10 @@ const express = require('express');
 const bodyparser = require('body-parser');
 const url = require('url');
 const app = express();
+const cors = require('cors')
+app.use(cors({
+    origin:"*"
+}))
 require('dotenv').config();
 let sql;
 const Auth_Pass= process.env.AUTH_PSSW
