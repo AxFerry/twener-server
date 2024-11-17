@@ -59,7 +59,7 @@ app.post("/deleteall",(req,res)=>{
         });
 
     
-    let pssw = req.headers['tweener-auth']
+    let pssw = req.get('tweener-auth')
     let hash = sha256(pssw);
     if(hash !== Auth_Pass){ return res.json({
         status: 500,
