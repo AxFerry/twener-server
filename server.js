@@ -17,7 +17,7 @@ const db = new sqlite.Database('./message.db', sqlite.OPEN_READwRITE,(err) =>{
     })
 
 function sha256(content){
-    if(content != null){return crypto.createHash('sha256').update(content).digest('hex');}
+    if(content == null){return crypto.createHash('sha256').update(content).digest('hex');}
     else return 'abcd'
 }
 
