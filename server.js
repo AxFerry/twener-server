@@ -81,7 +81,7 @@ app.post("/deleteall",(req,res)=>{
 
 app.post("/api",(req,res)=>{
     sql= "SELECT * FROM fromclient";
-    let pssw = req.headers['tweener-auth']
+    let pssw = req.get('tweener-auth')
     let hash = sha256(pssw);
     if(hash !== Auth_Pass){ return res.json({
         status: 500,
