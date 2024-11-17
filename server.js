@@ -17,8 +17,8 @@ const db = new sqlite.Database('./message.db', sqlite.OPEN_READwRITE,(err) =>{
     })
 
 function sha256(content){
-    if(content == null){return crypto.createHash('sha256').update(content).digest('hex');}
-    else return 'abcd'
+    return crypto.createHash('sha256').update(content).digest('hex');}
+    
 }
 
 
@@ -60,7 +60,7 @@ app.post("/deleteall",(req,res)=>{
         });
 
     
-    let pssw = req.headers['tweener-auth']
+    let pssw = req.headers['tweener-auth'].toString()
     let hash = sha256(pssw);
     if(hash !== Auth_Pass){ return res.json({
         status: 500,
@@ -82,7 +82,7 @@ app.post("/deleteall",(req,res)=>{
 
 app.post("/api",(req,res)=>{
     sql= "SELECT * FROM fromclient";
-    let pssw = req.headers['tweener-auth']
+    let pssw = req.headers['tweener-auth'].toString()
     let hash = sha256(pssw);
     if(hash !== Auth_Pass){ return res.json({
         status: 500,
