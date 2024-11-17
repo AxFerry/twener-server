@@ -18,8 +18,6 @@ const db = new sqlite.Database('./message.db', sqlite.OPEN_READwRITE,(err) =>{
 
 function sha256(content){
     return crypto.createHash('sha256').update(content).digest('hex');}
-    
-}
 
 
 app.use(bodyparser.json());
