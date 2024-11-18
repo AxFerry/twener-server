@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const bcrypt = require('bcrypt')
 const express = require('express');
 const bodyparser = require('body-parser');
 const url = require('url');
@@ -16,10 +17,12 @@ const db = new sqlite.Database('./message.db', sqlite.OPEN_READwRITE,(err) =>{
     if(err) return console.log(err)
     })
 
-function sha256(content){
-    return crypto.createHash('sha256').update(content).digest('hex');
+function psswCheck(pssw){
+    bcrypt.compare(pssw,Auth_Pass,function(err,result){
+        console.log(result)
+        return result
+    })
 }
-
 
 app.use(bodyparser.json());
 /*   app.use(express.static('/home/fcssp/webapp/tweener/tweener1/dist'))   */
@@ -59,9 +62,8 @@ app.post("/deleteall",(req,res)=>{
         });
 
     
-    let pssw = req.get('tweener-auth')
-    let hash = sha256(pssw);
-    if(hash !== Auth_Pass){ return res.json({
+    let pssw = req.headers['tweener-auth']
+    if(psswCheck(pssw) === false){ return res.json({
         status: 500,
         success: false,
         error : "Not allowed"
@@ -81,14 +83,14 @@ app.post("/deleteall",(req,res)=>{
 
 app.post("/api",(req,res)=>{
     sql= "SELECT * FROM fromclient";
-    let pssw = req.get('tweener-auth')
-    let hash = sha256(pssw);
-    if(hash !== Auth_Pass){ return res.json({
+    let pssw = req.headers['tweener-auth']
+    if(psswCheck(pssw) === false){ return res.json({
         status: 500,
         success: false,
         error : "Not allowed"
     });}
-    
+    else{
+          
     try{
      
         db.all(sql,[],(err,rows)=>{
@@ -112,6 +114,8 @@ app.post("/api",(req,res)=>{
     }catch(error){
 
     }
+    }
+  
 })
 
 
