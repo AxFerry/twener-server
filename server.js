@@ -63,11 +63,13 @@ app.post("/deleteall",(req,res)=>{
 
     
     let pssw = req.headers['tweener-auth']
-    if(psswCheck(pssw) === false){ return res.json({
-        status: 500,
-        success: false,
-        error : "Not allowed"
-    });}
+        bcrypt.compare(pssw,Auth_Pass,function(err,result){
+        if(result == false){ return res.json({
+            status: 500,
+            success: false,
+            error : "Not allowed"
+        });}
+
     else{
         try{db.run(sql)
             return res.json({
@@ -77,14 +79,16 @@ app.post("/deleteall",(req,res)=>{
             });    }
         catch(err){
 
-        }}
-        }
-        )
-
+        }}})
+ 
+    })
+    
 app.post("/api",(req,res)=>{
     sql= "SELECT * FROM fromclient";
-    let pssw = req.headers['tweener-auth']
-    if(psswCheck(pssw) === false){ return res.json({
+
+let pssw = req.headers['tweener-auth']
+    bcrypt.compare(pssw,Auth_Pass,function(err,result){
+    if(result == false){ return res.json({
         status: 500,
         success: false,
         error : "Not allowed"
@@ -108,20 +112,16 @@ app.post("/api",(req,res)=>{
                 status: 200,
                 data: rows ,
                 success: true
-            })
-        })
+            })})
 
     }catch(error){
         return res.json({
             status: 300,
             data: error ,
             success: false
-        })
-
-    }
-    }
+        })}}
   
-})
+})})
 
 
 
