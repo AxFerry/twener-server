@@ -85,6 +85,12 @@ app.post("/deleteall",(req,res)=>{
     
 app.post("/api",(req,res)=>{
     sql= "SELECT * FROM fromclient";
+    if(!req.headers.hasOwnProperty('tweener-auth') ) 
+    return res.json({
+        status: 500,
+        success: false,
+        error : "Not allowed"
+    });
 
 let pssw = req.headers['tweener-auth']
     bcrypt.compare(pssw,Auth_Pass,function(err,result){
