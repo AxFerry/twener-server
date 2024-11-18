@@ -112,6 +112,11 @@ app.post("/api",(req,res)=>{
         })
 
     }catch(error){
+        return res.json({
+            status: 300,
+            data: error ,
+            success: false
+        })
 
     }
     }
