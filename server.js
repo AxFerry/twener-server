@@ -51,7 +51,7 @@ app.post("/message",(req,res)=>{
         })
     }
 })
-app.post("/deleteall",(req,res)=>{
+app.post("/deleteall",async (req,res)=>{
     sql= "DELETE FROM fromclient";
     
     if(!req.headers.hasOwnProperty('tweener-auth') ) 
@@ -63,8 +63,8 @@ app.post("/deleteall",(req,res)=>{
 
     
     let pssw = req.headers['tweener-auth']
-        bcrypt.compare(pssw,Auth_Pass,function(err,result){
-        if(result == false){ return res.json({
+      let isTrue =  await bcrypt.compare(pssw,Auth_Pass)
+        if(isTrue == false){ return res.json({
             status: 500,
             success: false,
             error : "Not allowed"
@@ -81,9 +81,9 @@ app.post("/deleteall",(req,res)=>{
 
         }}})
  
-    })
     
-app.post("/api",(req,res)=>{
+    
+app.post("/api", async (req,res)=>{
     sql= "SELECT * FROM fromclient";
     if(!req.headers.hasOwnProperty('tweener-auth') ) 
     return res.json({
@@ -93,12 +93,12 @@ app.post("/api",(req,res)=>{
     });
 
 let pssw = req.headers['tweener-auth']
-    bcrypt.compare(pssw,Auth_Pass,function(err,result){
-    if(result == false){ return res.json({
-        status: 500,
-        success: false,
-        error : "Not allowed"
-    });}
+let isTrue =  await bcrypt.compare(pssw,Auth_Pass)
+  if(isTrue == false){ return res.json({
+      status: 500,
+      success: false,
+      error : "Not allowed"
+  });}
     else{
           
     try{
@@ -127,7 +127,7 @@ let pssw = req.headers['tweener-auth']
             success: false
         })}}
   
-})})
+})
 
 
 
