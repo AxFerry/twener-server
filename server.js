@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const express = require('express');
 const bodyparser = require('body-parser');
 const url = require('url');
