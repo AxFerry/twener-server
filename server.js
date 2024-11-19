@@ -94,7 +94,7 @@ app.post("/api", async (req,res)=>{
         error : "Not allowed !!",
          });
     let pssw = req.headers['tweener-auth']
-    await bcrypt.compare(pssw,Auth_Pass).then((check)=>{
+    bcrypt.compare(pssw,Auth_Pass).then((check)=>{
         if(!check){ return res.json({
             status: 500,
             success: false,
