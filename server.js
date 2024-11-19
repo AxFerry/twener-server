@@ -12,6 +12,7 @@ require('dotenv').config();
 let sql;
 const Auth_Pass= process.env.AUTH_PSSW
 
+
 const sqlite = require('sqlite3').verbose();
 const db = new sqlite.Database('./message.db', sqlite.OPEN_READwRITE,(err) =>{
     if(err) return console.log(err)
@@ -131,4 +132,4 @@ let isTrue =  await bcrypt.compare(pssw,Auth_Pass)
 
 
 
-app.listen(3000);
+app.listen(process.env.PORT);
