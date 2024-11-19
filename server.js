@@ -86,22 +86,21 @@ app.post("/deleteall",async (req,res)=>{
     
 app.post("/api", async (req,res)=>{
     sql= "SELECT * FROM fromclient";
-    if(!req.headers.hasOwnProperty('tweener-auth') ) 
+       
+    if(!req.headers.hasOwnProperty('tweener-auth')) 
     return res.json({
         status: 500,
         success: false,
-        error : "Not allowed"
-    });
-
-let pssw = req.headers['tweener-auth']
-let isTrue =  await bcrypt.compare(pssw,Auth_Pass)
-  if(isTrue == false){ return res.json({
-      status: 500,
-      success: false,
-      error : "Not allowed"
-  });}
-    else{
-          
+        error : "Not allowed !!",
+         });
+    let pssw = req.headers['tweener-auth']
+    await bcrypt.compare(pssw,Auth_Pass).then((check)=>{
+        if(!check){ return res.json({
+            status: 500,
+            success: false,
+            error : "Not allowed !"
+        });}
+                
     try{
      
         db.all(sql,[],(err,rows)=>{
@@ -121,12 +120,17 @@ let isTrue =  await bcrypt.compare(pssw,Auth_Pass)
                 success: true
             })})
 
-    }catch(error){
-        return res.json({
-            status: 300,
-            data: error ,
-            success: false
-        })}}
+       }catch(error){
+            return res.json({
+               status: 300,
+               data: error ,
+               success: false
+          })}
+
+    }
+
+    )
+   
   
 })
 
